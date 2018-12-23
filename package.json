@@ -1,0 +1,18 @@
+{
+  "name": "vigilant-parakeet",
+  "version": "1.0.0",
+  "description": "vigilant-parakeet",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dplusic/vigilant-parakeet.git"
+  },
+  "author": "Dongwoon Son <dplusic@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/dplusic/vigilant-parakeet/issues"
+  },
+  "homepage": "https://github.com/dplusic/vigilant-parakeet#readme"
+}
