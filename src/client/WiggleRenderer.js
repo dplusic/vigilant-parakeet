@@ -39,6 +39,9 @@ export default class WiggleRenderer extends Renderer {
         ctx.scale(game.zoom, -game.zoom);  // Zoom in and flip y axis
 
         // Draw all things
+
+        this.drawBounds();
+
         game.world.forEachObject((id, obj) => {
             if (obj instanceof Wiggle) this.drawWiggle(obj);
             else if (obj instanceof Food) this.drawFood(obj);
@@ -49,6 +52,13 @@ export default class WiggleRenderer extends Renderer {
     }
 
     drawWiggle(w) {
+
+        ctx.save();
+
+        if (w.gameEngine.playerId === w.playerId) {
+            ctx.strokeStyle = ctx.fillStyle = 'yellow';
+        }
+
         let x = w.position.x;
         let y = w.position.y;
         this.drawCircle(x, y, game.headRadius, true);
@@ -56,6 +66,8 @@ export default class WiggleRenderer extends Renderer {
             let nextPos = w.bodyParts[i];
             this.drawCircle(nextPos.x, nextPos.y, game.bodyRadius, true);
         }
+
+        ctx.restore();
     }
 
     drawFood(f) {

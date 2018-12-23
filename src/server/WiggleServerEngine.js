@@ -29,7 +29,9 @@ export default class WiggleServerEngine extends ServerEngine {
     onPlayerDisconnected(socketId, playerId) {
         super.onPlayerDisconnected(socketId, playerId);
         // let playerObj = this.gameEngine.world.queryObjects({ playerId });
-        // this.gameEngine.removeObjectFromWorld(playerObj);
+        if (!(playerId in this.gameEngine.world.objects))
+            return;
+        this.gameEngine.removeObjectFromWorld(playerId);
     }
 
     // Eating Food:
@@ -51,7 +53,7 @@ export default class WiggleServerEngine extends ServerEngine {
 
         console.log(`wiggle hit wiggle ${w1.toString()} ${w2.toString()}`);
 
-        this.gameEngine.removeObjectFromWorld(w1);
+        this.gameEngine.removeObjectFromWorld(w2);
     }
 
     stepLogic() {
@@ -61,10 +63,12 @@ export default class WiggleServerEngine extends ServerEngine {
 
             // check for collision
             for (let w2 of wiggles) {
-                if (w === w2)
-                    continue;
+                let i = w2.bodyParts.length - 1;
+                if (w === w2) {
+                    i = w2.bodyParts.length - 30;
+                }
 
-                for (let i = 0; i < w2.bodyParts.length; i++) {
+                for (; i >= 0; i--) {
                     let distance = w2.bodyParts[i].clone().subtract(w.position);
                     if (distance.length() < this.gameEngine.collideDistance)
                         this.wiggleHitWiggle(w, w2);

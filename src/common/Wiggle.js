@@ -10,8 +10,10 @@ export default class Wiggle extends DynamicObject {
     // the next part in the body.
     static get netScheme() {
         return Object.assign({
-            direction: { type: BaseTypes.TYPES.STRING },
-            bodyLength: { type: BaseTypes.TYPES.INT16 }
+            bodyParts: {
+                type: BaseTypes.TYPES.LIST,
+                itemType: BaseTypes.TYPES.CLASSINSTANCE
+            },
         }, super.netScheme);
     }
 
@@ -23,13 +25,14 @@ export default class Wiggle extends DynamicObject {
 
     syncTo(other) {
         super.syncTo(other);
-        this.direction = other.direction;
-        this.bodyLength = other.bodyLength;
+
+        // TODO: sync only first time
+        // this.bodyParts = other.bodyParts;
     }
 
     toString() {
         // let body = '';
         // this.bodyParts.forEach((b, i) => { body += `${b.toString()},`; });
-        return `Wiggle::${super.toString()} direction=${this.direction} length=${this.bodyLength}`;
+        return `Wiggle::${super.toString()}`;
     }
 }

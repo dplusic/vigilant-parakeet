@@ -14,9 +14,9 @@ export default class WiggleGameEngine extends GameEngine {
         // game variables
         Object.assign(this, {
             foodRadius: 0.1, headRadius: 0.2, bodyRadius: 0.1,
-            spaceWidth: 16, spaceHeight: 9, moveDist: 0.04,
-            foodCount: 16, eatDistance: 0.3, collideDistance: 0.3,
-            startBodyLength: 10
+            spaceWidth: 18, spaceHeight: 32, moveDist: 0.04,
+            foodCount: 0, eatDistance: 0.3, collideDistance: 0.3,
+            startBodyLength: 0
         });
     }
 
@@ -43,26 +43,36 @@ export default class WiggleGameEngine extends GameEngine {
         this.world.forEachObject((id, obj) => {
             if (obj instanceof Wiggle) {
 
-                // add a body part and trim the length
-                obj.bodyParts.push(obj.position.clone());
-                while (obj.bodyLength < obj.bodyParts.length) obj.bodyParts.shift();
-
-                // calculate next position
-                switch (obj.direction) {
-                case 'up':
-                    obj.position.y += this.moveDist; break;
-                case 'down':
-                    obj.position.y -= this.moveDist; break;
-                case 'right':
-                    obj.position.x += this.moveDist; break;
-                case 'left':
-                    obj.position.x -= this.moveDist; break;
+                if (obj.orientation) {
+                    obj.position.x += obj.orientation.x * this.moveDist;
+                    obj.position.y += obj.orientation.y * this.moveDist;
+                } else {
+                    obj.position.y += this.moveDist;
                 }
 
-                if (obj.position.y > this.spaceHeight / 2) obj.direction = 'down';
-                if (obj.position.x > this.spaceWidth / 2) obj.direction = 'left';
-                if (obj.position.y < -this.spaceHeight / 2) obj.direction = 'up';
-                if (obj.position.x < -this.spaceWidth / 2) obj.direction = 'right';
+                let onBorderX = false;
+                let onBorderY = false;
+
+                if (obj.position.y > this.spaceHeight / 2) {
+                    obj.position.y = this.spaceHeight / 2;
+                    onBorderY = true;
+                }
+                if (obj.position.x > this.spaceWidth / 2) {
+                    obj.position.x = this.spaceWidth / 2;
+                    onBorderX = true;
+                }
+                if (obj.position.y < -this.spaceHeight / 2) {
+                    obj.position.y = -this.spaceHeight / 2;
+                    onBorderY = true;
+                }
+                if (obj.position.x < -this.spaceWidth / 2) {
+                    obj.position.x = -this.spaceWidth / 2;
+                    onBorderX = true;
+                }
+
+                if (onBorderX === false || onBorderY === false) {
+                    obj.bodyParts.push(obj.position.clone());
+                }
             }
         });
     }
@@ -74,7 +84,10 @@ export default class WiggleGameEngine extends GameEngine {
         // get the player's primary object
         let player = this.world.queryObject({ playerId });
         if (player) {
-            player.direction = inputData.input;
+            if (inputData.options) {
+                const length = Math.sqrt(inputData.options.x * inputData.options.x + inputData.options.y * inputData.options.y);
+                player.orientation = { x: inputData.options.x / length, y: -inputData.options.y / length };
+            }
         }
     }
 }
