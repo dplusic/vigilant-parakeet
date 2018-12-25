@@ -56,6 +56,12 @@ export default class WiggleRenderer extends Renderer {
         ctx.save();
 
         if (w.gameEngine.playerId === w.playerId) {
+            ctx.strokeStyle = ctx.fillStyle = '#FF0000';
+        }
+
+        this.drawPolygon(w.territory);
+
+        if (w.gameEngine.playerId === w.playerId) {
             ctx.strokeStyle = ctx.fillStyle = 'yellow';
         }
 
@@ -79,6 +85,18 @@ export default class WiggleRenderer extends Renderer {
         ctx.arc(x, y, radius, 0, 2*Math.PI);
         fill?ctx.fill():ctx.stroke();
         ctx.closePath();
+    }
+
+    drawPolygon(points) {
+        if (points == null || points.length == 0) {
+            return;
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        points.slice(1).forEach((point) => ctx.lineTo(point.x, point.y));
+        ctx.closePath();
+        ctx.fill();
     }
 
     drawBounds() {

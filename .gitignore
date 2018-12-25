@@ -62,3 +62,6 @@ typings/
 
 # Project build output
 /dist/bundle.js
+
+# etc
+.history

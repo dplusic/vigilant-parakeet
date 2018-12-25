@@ -14,20 +14,32 @@ export default class Wiggle extends DynamicObject {
                 type: BaseTypes.TYPES.LIST,
                 itemType: BaseTypes.TYPES.CLASSINSTANCE
             },
+            territory: {
+                type: BaseTypes.TYPES.LIST,
+                itemType: BaseTypes.TYPES.CLASSINSTANCE
+            },
+            inTerritory: {
+                type: BaseTypes.TYPES.INT8
+            },
         }, super.netScheme);
     }
 
     constructor(gameEngine, options, props) {
         super(gameEngine, options, props);
         this.class = Wiggle;
+        this.inTerritory = true;
         this.bodyParts = [];
+        this.territory = [];
     }
 
     syncTo(other) {
         super.syncTo(other);
 
-        // TODO: sync only first time
-        // this.bodyParts = other.bodyParts;
+        this.inTerritory = other.inTerritory === 0 ? false : true;
+
+        // TODO: sync in appropriate time
+        this.bodyParts = other.bodyParts;
+        this.territory = other.territory;
     }
 
     toString() {

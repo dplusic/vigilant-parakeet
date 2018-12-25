@@ -1,6 +1,11 @@
 import ServerEngine from 'lance/ServerEngine';
 import Wiggle from '../common/Wiggle';
 import Food from '../common/Food';
+import TwoVector from 'lance/serialize/TwoVector';
+import { makeInitialTerritory, inTerritory, makeNewTerritory } from '../common/Model/Territory';
+
+const tupleToTwoVector = (x) => new TwoVector(x[0], x[1]);
+const twoVectorToTuple = (v) => ([v.x, v.y]);
 
 export default class WiggleServerEngine extends ServerEngine {
 
@@ -19,9 +24,9 @@ export default class WiggleServerEngine extends ServerEngine {
 
     onPlayerConnected(socket) {
         super.onPlayerConnected(socket);
-        let player = new Wiggle(this.gameEngine, null, { position: this.gameEngine.randPos() });
-        player.direction = 'up';
-        player.bodyLength = this.gameEngine.startBodyLength;
+        const position = this.gameEngine.randPos();
+        let player = new Wiggle(this.gameEngine, null, { position });
+        player.territory = makeInitialTerritory(30)(1)([position.x, position.y]).map(tupleToTwoVector);
         player.playerId = socket.playerId;
         this.gameEngine.addObjectToWorld(player);
     }
@@ -61,6 +66,9 @@ export default class WiggleServerEngine extends ServerEngine {
         let foodObjects = this.gameEngine.world.queryObjects({ instanceType: Food });
         for (let w of wiggles) {
 
+            // check inTerritory
+            this.checkInTerritory(w);
+
             // check for collision
             for (let w2 of wiggles) {
                 let i = w2.bodyParts.length - 1;
@@ -82,6 +90,17 @@ export default class WiggleServerEngine extends ServerEngine {
                     this.wiggleEatFood(w, f);
                 }
             }
+        }
+    }
+
+    checkInTerritory(w) {
+        const previousInTerritory = w.inTerritory;
+
+        w.inTerritory = inTerritory(w.territory.map(twoVectorToTuple))([w.position.x, w.position.y]);
+
+        if (previousInTerritory === false && w.inTerritory === true) {
+            w.territory = makeNewTerritory(w.territory.map(twoVectorToTuple))(w.bodyParts.slice(0, w.bodyParts.length - 1).map(twoVectorToTuple)).map(tupleToTwoVector);
+            w.bodyParts = [];
         }
     }
 }

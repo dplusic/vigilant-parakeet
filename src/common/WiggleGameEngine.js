@@ -70,7 +70,7 @@ export default class WiggleGameEngine extends GameEngine {
                     onBorderX = true;
                 }
 
-                if (onBorderX === false || onBorderY === false) {
+                if (obj.inTerritory === false && (onBorderX === false || onBorderY === false)) {
                     obj.bodyParts.push(obj.position.clone());
                 }
             }
