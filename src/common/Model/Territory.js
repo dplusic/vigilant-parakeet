@@ -33,6 +33,25 @@ const findIndexOfNearest = points => point =>
   ).pointIndex;
 
 export const makeNewTerritory = previousTerritory => rawNewBorder => {
+  // TODO:
+  // ---------------@
+  //          <IN>  |  <OUT>
+  //                @
+  //                |
+  //           O----X----O---------O
+  //       startIn  |  startOut    |
+  //                #              |
+  //                |              O newBorder
+  //   existBorderA #              |
+  //                |              |
+  //           O----X----O---------O
+  //         endIn  |  endOut
+  //                @
+  //                |
+  //   existBorderB @
+  //                |
+  // ---------------@
+
   // TODO: check when length === 1
   if (rawNewBorder.length < 1) {
     return previousTerritory;
