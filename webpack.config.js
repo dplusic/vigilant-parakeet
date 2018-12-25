@@ -30,5 +30,6 @@ module.exports = {
     },
     resolve: {
         alias: { lance: path.resolve(__dirname, 'node_modules/lance-gg/src/') }
-    }
+    },
+    devtool: 'inline-source-map',
 };
