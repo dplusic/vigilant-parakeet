@@ -55,15 +55,11 @@ export default class WiggleRenderer extends Renderer {
 
         ctx.save();
 
-        if (w.gameEngine.playerId === w.playerId) {
-            ctx.strokeStyle = ctx.fillStyle = '#FF0000';
-        }
+        ctx.strokeStyle = ctx.fillStyle = w.color + '88';
 
         this.drawPolygon(w.territory);
 
-        if (w.gameEngine.playerId === w.playerId) {
-            ctx.strokeStyle = ctx.fillStyle = 'yellow';
-        }
+        ctx.strokeStyle = ctx.fillStyle = w.color;
 
         let x = w.position.x;
         let y = w.position.y;

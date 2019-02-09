@@ -7,6 +7,8 @@ import { makeInitialTerritory, inTerritory, makeNewTerritory } from '../common/M
 const tupleToTwoVector = (x) => new TwoVector(x[0], x[1]);
 const twoVectorToTuple = (v) => ([v.x, v.y]);
 
+const getRandomColor = () => '#' + Math.floor(Math.random() * 16777215).toString(16);
+
 export default class WiggleServerEngine extends ServerEngine {
 
     constructor(io, gameEngine, inputOptions) {
@@ -24,8 +26,9 @@ export default class WiggleServerEngine extends ServerEngine {
 
     onPlayerConnected(socket) {
         super.onPlayerConnected(socket);
+        const color = getRandomColor();
         const position = this.gameEngine.randPos();
-        let player = new Wiggle(this.gameEngine, null, { position });
+        let player = new Wiggle(this.gameEngine, { color }, { position });
         player.territory = makeInitialTerritory(30)(1)([position.x, position.y]).map(tupleToTwoVector);
         player.playerId = socket.playerId;
         this.gameEngine.addObjectToWorld(player);

@@ -21,6 +21,9 @@ export default class Wiggle extends DynamicObject {
             inTerritory: {
                 type: BaseTypes.TYPES.INT8
             },
+            color: {
+                type: BaseTypes.TYPES.STRING
+            },
         }, super.netScheme);
     }
 
@@ -30,6 +33,10 @@ export default class Wiggle extends DynamicObject {
         this.inTerritory = true;
         this.bodyParts = [];
         this.territory = [];
+
+        if (options) {
+            this.color = options.color;
+        }
     }
 
     syncTo(other) {
@@ -38,6 +45,7 @@ export default class Wiggle extends DynamicObject {
         this.inTerritory = other.inTerritory === 0 ? false : true;
 
         // TODO: sync in appropriate time
+        this.color = other.color;
         this.bodyParts = other.bodyParts;
         this.territory = other.territory;
     }
