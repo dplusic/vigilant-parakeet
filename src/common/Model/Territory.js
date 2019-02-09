@@ -93,20 +93,8 @@ export const makeNewTerritory = previousTerritory => rawNewBorder => {
   const newTerritoryCandidate = [...existBorder1, ...newBorderReversed];
 
   if (inTerritory(newTerritoryCandidate)(existBorder2[0])) {
-    console.log(previousTerritory);
-    console.log(existBorder1);
-    console.log(existBorder2);
-    console.log(newBorder);
-    console.log(newTerritoryCandidate);
-
     return newTerritoryCandidate;
   } else {
-    console.log(previousTerritory);
-    console.log(existBorder1);
-    console.log(existBorder2);
-    console.log(newBorder);
-    console.log([...existBorder2, ...newBorder]);
-
     return [...existBorder2, ...newBorder];
   }
 };
