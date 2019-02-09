@@ -43,6 +43,8 @@ export default class WiggleGameEngine extends GameEngine {
         this.world.forEachObject((id, obj) => {
             if (obj instanceof Wiggle) {
 
+                const previousPosition = obj.position.clone();
+
                 if (obj.orientation) {
                     obj.position.x += obj.orientation.x * this.moveDist;
                     obj.position.y += obj.orientation.y * this.moveDist;
@@ -70,7 +72,9 @@ export default class WiggleGameEngine extends GameEngine {
                     onBorderX = true;
                 }
 
-                if (obj.inTerritory === false && (onBorderX === false || onBorderY === false)) {
+                if (obj.inTerritory === true) {
+                    obj.bodyParts = [previousPosition];
+                } else if (obj.inTerritory === false && (onBorderX === false || onBorderY === false)) {
                     obj.bodyParts.push(obj.position.clone());
                 }
             }
