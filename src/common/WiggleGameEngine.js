@@ -14,7 +14,7 @@ export default class WiggleGameEngine extends GameEngine {
         // game variables
         Object.assign(this, {
             foodRadius: 0.1, headRadius: 0.2, bodyRadius: 0.1,
-            spaceWidth: 18, spaceHeight: 32, moveDist: 0.04,
+            spaceWidth: 32, spaceHeight: 18, moveDist: 0.04,
             foodCount: 0, eatDistance: 0.3, collideDistance: 0.3,
             startBodyLength: 0
         });
