@@ -38,6 +38,13 @@ export default class WiggleRenderer extends Renderer {
         ctx.translate(game.w/2, game.h/2); // Translate to the center
         ctx.scale(game.zoom, -game.zoom);  // Zoom in and flip y axis
 
+        // set view port
+        const player = Object.values(game.world.objects).find((x) => x instanceof Wiggle && x.playerId === game.playerId);
+        if (player) {
+            ctx.scale(6, 6);
+            ctx.translate(-player.position.x, -player.position.y); // Translate to the player
+        }
+
         // Draw all things
 
         this.drawBounds();
