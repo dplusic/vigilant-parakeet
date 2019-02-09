@@ -26,9 +26,10 @@ export default class WiggleServerEngine extends ServerEngine {
 
     onPlayerConnected(socket) {
         super.onPlayerConnected(socket);
+        const playerName = socket.handshake.query.playerName;
         const color = getRandomColor();
         const position = this.gameEngine.randPos();
-        let player = new Wiggle(this.gameEngine, { color }, { position });
+        let player = new Wiggle(this.gameEngine, { color, playerName }, { position });
         player.territory = makeInitialTerritory(30)(1)([position.x, position.y]).map(tupleToTwoVector);
         player.playerId = socket.playerId;
         this.gameEngine.addObjectToWorld(player);

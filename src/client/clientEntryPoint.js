@@ -19,6 +19,13 @@ const defaults = {
 };
 let options = Object.assign(defaults, qsOptions);
 
+let name = localStorage.getItem('playerName');
+while (typeof name !== 'string' || name.trim().length < 1) {
+    name = prompt('name?');
+}
+options.playerName = name;
+localStorage.setItem('playerName', name);
+
 // create a client engine and a game engine
 const gameEngine = new WiggleGameEngine(options);
 const clientEngine = new WiggleClientEngine(gameEngine, options);

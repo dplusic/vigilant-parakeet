@@ -76,6 +76,15 @@ export default class WiggleRenderer extends Renderer {
             this.drawCircle(nextPos.x, nextPos.y, game.bodyRadius, true);
         }
 
+        // name
+        if (w.gameEngine.playerId !== w.playerId) {
+            ctx.fillStyle = '#FFFFFF';
+            ctx.scale(1, -1);
+            ctx.font = '0.5px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(w.playerName, x, -y);
+        }
+
         ctx.restore();
     }
 

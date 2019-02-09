@@ -21,6 +21,9 @@ export default class Wiggle extends DynamicObject {
             inTerritory: {
                 type: BaseTypes.TYPES.INT8
             },
+            playerName: {
+                type: BaseTypes.TYPES.STRING
+            },
             color: {
                 type: BaseTypes.TYPES.STRING
             },
@@ -35,6 +38,7 @@ export default class Wiggle extends DynamicObject {
         this.territory = [];
 
         if (options) {
+            this.playerName = options.playerName;
             this.color = options.color;
         }
     }
@@ -45,6 +49,7 @@ export default class Wiggle extends DynamicObject {
         this.inTerritory = other.inTerritory === 0 ? false : true;
 
         // TODO: sync in appropriate time
+        this.playerName = other.playerName;
         this.color = other.color;
         this.bodyParts = other.bodyParts;
         this.territory = other.territory;
